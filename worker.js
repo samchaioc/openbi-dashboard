@@ -59,7 +59,7 @@ async function handleSheetProxy(url) {
 async function serveStatic(path) {
   if (path === '/' || path === '/index.html') {
     return new Response(INDEX_HTML, {
-      headers: { 'Content-Type': 'text/html' }
+      headers: { 'Content-Type': 'text/html; charset=utf-8' }
     });
   }
   
@@ -225,7 +225,7 @@ const INDEX_HTML = `<!DOCTYPE html>
       OPENBI_INDEX_URL: 'https://docs.google.com/spreadsheets/d/1Gu-Z1V_3sfOE6pWIGd8Hlg--RfWkBlLhDikQmU1g1Pk/export?format=csv'
     };
 
-    const STORE_NAMES = \${JSON.stringify(STORE_NAMES)};
+    const STORE_NAMES = ${JSON.stringify(STORE_NAMES)};
     
     let globalData = null;
     let currentStore = 'all';
@@ -238,7 +238,8 @@ const INDEX_HTML = `<!DOCTYPE html>
 
     function parseCSV(csv) {
       const rows = [];
-      const lines = csv.split('\\n');
+      const NEWLINE = String.fromCharCode(10);
+      const lines = csv.split(NEWLINE);
       for (const line of lines) {
         if (!line.trim()) continue;
         const row = [];
