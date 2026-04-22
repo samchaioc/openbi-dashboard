@@ -63,6 +63,11 @@ async function serveStatic(path) {
     });
   }
   
+  // Favicon - return empty
+  if (path === '/favicon.ico') {
+    return new Response('', { status: 204 });
+  }
+  
   return new Response('Not Found', { status: 404 });
 }
 
