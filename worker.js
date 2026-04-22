@@ -1,20 +1,19 @@
-// Cloudflare Worker - OpenBI Dashboard
-// 靜態文件 + Google Sheets API 代理
+addEventListener("fetch", event => {
+  event.respondWith(handleRequest(event.request));
+});
 
-export default {
-  async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-    const path = url.pathname;
-    
-    // API 路由: /api/sheet
-    if (path === '/api/sheet') {
-      return handleSheetProxy(url);
-    }
-    
-    // 靜態文件
-    return serveStatic(path);
+async function handleRequest(request) {
+  const url = new URL(request.url);
+  const path = url.pathname;
+  
+  // API route: /api/sheet
+  if (path === "/api/sheet") {
+    return handleSheetProxy(url);
   }
-};
+  
+  // Static files
+  return serveStatic(path);
+}
 
 // 處理 /api/sheet 請求
 async function handleSheetProxy(url) {
@@ -80,8 +79,21 @@ const STORE_NAMES = {
   'SS15': 'SS15'
 };
 
+async function handleRequest(request) {
+  const url = new URL(request.url);
+  const path = url.pathname;
+  
+  // For API routes
+  if (path === "/api/sheet") {
+    return handleSheetProxy(url);
+  }
+  
+  // Static files
+  return serveStatic(path);
+}
+
 // OpenBI Dashboard HTML
-const INDEX_HTML = \`<!DOCTYPE html>
+const INDEX_HTML = `<!DOCTYPE html>
 <html lang="zh-TW">
 <head>
   <meta charset="UTF-8">
@@ -599,4 +611,4 @@ const INDEX_HTML = \`<!DOCTYPE html>
     document.addEventListener('DOMContentLoaded', () => { loadOpenBIData(); });
   </script>
 </body>
-</html>\`;
+</html>`;
